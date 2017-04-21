@@ -49,6 +49,7 @@ var v1weavingSalesContractReportRouter = require('../src/routers/v1/sales/report
 
 var v1finishingPrintingSalesContractReportRouter = require('../src/routers/v1/sales/reports/finishing-printing-sales-contract-report-router');
 var v1spinningSalesContractReportRouter = require('../src/routers/v1/sales/reports/spinning-sales-contract-report-router');
+var v1finishingPrintingSalesContractByNumberRouter = require('../src/routers/v1/sales/finishing-printing-sales-contract-by-number-router');
 
 // INVENTORY
 var packingReceiptRouter = require('../src/routers/v1/inventory/packing-receipt-router');
@@ -81,7 +82,8 @@ module.exports = function(server) {
     v1KanbanRouter().applyRoutes(server,                                        "/v1/finishing-printing/kanbans");
     fabricQualityControlRouter().applyRoutes(server,                            "/v1/finishing-printing/quality-control/fabrics");
     packingRouter().applyRoutes(server,                                         "/v1/finishing-printing/quality-control/packings");
-    v1finishingPrintingSalesContractReportRouter().applyRoutes(server,          "/v1/finishing-printing/reports/finishing-printing-sales-contract-reports"); 
+    v1finishingPrintingSalesContractReportRouter().applyRoutes(server,          "/v1/finishing-printing/reports/finishing-printing-sales-contract-reports");
+    v1finishingPrintingSalesContractByNumberRouter().applyRoutes(server,        "/v1/sales/finishing-printing-sales-contract-by-number");
     
     packingReceiptRouter().applyRoutes(server,                                  "/v1/inventory/packing-receipts"); 
     v1InspectionLotColorRouter().applyRoutes(server,                            "/v1/finishing-printing/inspection-lot-colors");
