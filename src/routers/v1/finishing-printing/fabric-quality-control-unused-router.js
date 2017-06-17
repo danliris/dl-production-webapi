@@ -19,6 +19,11 @@ function getRouter() {
                 isUsed: { $nin: [true] }
             };
 
+            var order = {
+                _updatedDate: -1
+            };
+
+            query.order = order;
             query.filter = filter;
 
             manager.read(query)
