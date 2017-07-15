@@ -49,6 +49,9 @@ var packingUnacceptedRouter= require('../src/routers/v1/finishing-printing/packi
 var v1InspectionLotColorRouter= require('../src/routers/v1/finishing-printing/inspection-lot-color-router');
 var v1InspectionLotColorReportRouter = require('../src/routers/v1/finishing-printing/reports/inspection-lot-color-report-router');
 
+// SALES
+var v1SalesMonthlyReportRouter = require('../src/routers/v1/sales/reports/sales-monthly-report-router');
+
 //SALES CONTRACT
 var v1finishingPrintingSalesContractRouter = require('../src/routers/v1/sales/finishing-printing-sales-contract-router');
 var v1spinningSalesContractRouter = require('../src/routers/v1/sales/spinning-sales-contract-router');
@@ -85,8 +88,10 @@ module.exports = function(server) {
     v1DailyOperationRouter().applyRoutes(server,                                "/v1/finishing-printing/daily-operations");
     v1DailyOperationReportRouter().applyRoutes(server,                          "/v1/finishing-printing/reports/daily-operation-report");
     v1MonitoringEventRouter().applyRoutes(server,                               "/v1/finishing-printing/monitoring-events");
-
-  v1DailyOperationBadOuputReportRouter().applyRoutes(server,                          "/v1/finishing-printing/reports/bad-output-report");
+  
+    v1SalesMonthlyReportRouter().applyRoutes(server,                            "/v1/sales/reports/sales-monthly-report");
+    
+    v1DailyOperationBadOuputReportRouter().applyRoutes(server,                  "/v1/finishing-printing/reports/bad-output-report");
 
     v1MonitoringEventReportRouter().applyRoutes(server,                         "/v1/finishing-printing/reports/monitoring-events");
     v1MonitoringSpecificationMachineRouter().applyRoutes(server,                "/v1/finishing-printing/monitoring-specification-machine");
