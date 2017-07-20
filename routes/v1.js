@@ -44,6 +44,9 @@ var packingRouter= require('../src/routers/v1/finishing-printing/packing-router'
 var packingReportRouter=require('../src/routers/v1/finishing-printing/reports/packing-report-router');
 var packingUnacceptedRouter= require('../src/routers/v1/finishing-printing/packing-unaccepted-router');
 
+//MASTER
+var v1BuyerRouter = require("../src/routers/v1/master/buyer-router");
+var v1MaterialConstructionRouter = require("../src/routers/v1/master/material-construction-router");
 
 // INSPECTION-LOT-COLOR
 var v1InspectionLotColorRouter= require('../src/routers/v1/finishing-printing/inspection-lot-color-router');
@@ -115,4 +118,7 @@ module.exports = function(server) {
     v1InspectionLotColorRouter().applyRoutes(server,                            "/v1/finishing-printing/inspection-lot-colors");
     v1InspectionLotColorReportRouter().applyRoutes(server,                      "/v1/finishing-printing/reports/inspection-lot-color"); 
     v1fabricQualityControlReportRouter().applyRoutes(server,                    "/v1/finishing-printing/reports/fabric-quality-control-report"); 
+
+    v1BuyerRouter().applyRoutes(server,                    "/v1/master/buyer"); 
+    v1MaterialConstructionRouter().applyRoutes(server,                    "/v1/master/material-construction"); 
 };

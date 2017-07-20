@@ -13,11 +13,7 @@ function getRouter() {
 
             var query = request.queryInfo;
             query.accept =request.headers.accept;
-            // if(!query.page){
-            //     query.page=1;
-            // }if(!query.size){
-            //     query.size=20;
-            // }
+  
             manager.getSalesMonthlyReport(query)
                 .then(docs => {
                     var dateFormat = "DD MMM YYYY";
@@ -40,43 +36,39 @@ function getRouter() {
                         for (var order of docs.data) {
                             index++;
                             var item = {};
-                            // var firstname = "";
-                            // var lastname = "";
-                            // if (order.firstname) firstname = order.firstname;
-                            // if (order.lastname) lastname = order.lastname;
                             item["No"] = index;
                             item["Sales"] = order._id.sales;
-                            item["Januari"] = order.jan;
-                            item["Februari"] = order.feb;
-                            item["Maret"] = order.mar;
-                            item["April"] = order.apr;
-                            item["Mei"] = order.mei;
-                            item["Juni"] = order.jun;
-                            item["Juli"] = order.jul;
-                            item["Agustus"] = order.agu;
-                            item["September"] = order.sep;
-                            item["Oktober"] = order.okt;
-                            item["November"] = order.nov;
-                            item["Desember"] = order.des;
-                            item["Total"] = order.totalOrder;
+                            item["Januari"] = order.jan.toFixed(2);
+                            item["Februari"] = order.feb.toFixed(2);
+                            item["Maret"] = order.mar.toFixed(2);
+                            item["April"] = order.apr.toFixed(2);
+                            item["Mei"] = order.mei.toFixed(2);
+                            item["Juni"] = order.jun.toFixed(2);
+                            item["Juli"] = order.jul.toFixed(2);
+                            item["Agustus"] = order.agu.toFixed(2);
+                            item["September"] = order.sep.toFixed(2);
+                            item["Oktober"] = order.okt.toFixed(2);
+                            item["November"] = order.nov.toFixed(2);
+                            item["Desember"] = order.des.toFixed(2);
+                            item["Total"] = order.totalOrder.toFixed(2);
                             data.push(item);
                         }
                         var options = {
                             "No": "number",
                             "Sales": "string",
-                            "Januari": "number",
-                            "Februari": "number",
-                            "Maret": "number",
-                            "April": "number",
-                            "Mei": "number",
-                            "Juni": "number",
-                            "Juli": "number",
-                            "Agustus": "number",
-                            "September": "number",
-                            "Oktober": "number",
-                            "November": "number",
-                            "Desember": "number",
-                            "Total": "number",
+                            "Januari": "string",
+                            "Februari": "string",
+                            "Maret": "string",
+                            "April": "string",
+                            "Mei": "string",
+                            "Juni": "string",
+                            "Juli": "string",
+                            "Agustus": "string",
+                            "September": "string",
+                            "Oktober": "string",
+                            "November": "string",
+                            "Desember": "string",
+                            "Total": "string",
                         };
                         response.xls(`Sales Monthly Report.xlsx`, data, options);
                     }
