@@ -50,4 +50,8 @@ describe('@dl-production-webapi', function() {
     test("/v1/finishing-printing/quality-control/packings", "./routes/production/finishing-printing/packing"); 
     test("/v1/inventory/packing-receipts", "./routes/inventory/packing-receipt"); 
     test("/v1/finishing-printing/quality-control/inspection-lot-colors", "./routes/production/finishing-printing/inspection-lot-color"); 
+    test("/v1/sales/deal-tracking-boards", "./routes/sales/deal-tracking-board");
+    test("/v1/sales/deal-tracking-stages", "./routes/sales/deal-tracking-stage");
+    test("/v1/sales/deal-tracking-deals", "./routes/sales/deal-tracking-deal");
+    test("/v1/sales/deal-tracking-activities", "./routes/sales/deal-tracking-activity");
 });
