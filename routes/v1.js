@@ -66,6 +66,12 @@ var v1finishingPrintingSalesContractReportRouter = require('../src/routers/v1/sa
 var v1spinningSalesContractReportRouter = require('../src/routers/v1/sales/reports/spinning-sales-contract-report-router');
 var v1finishingPrintingSalesContractByNumberRouter = require('../src/routers/v1/sales/finishing-printing-sales-contract-by-number-router');
 
+// SALES DEAL STATUS
+var v1dealTrackingBoardRouter = require('../src/routers/v1/sales/deal-tracking-board-router');
+var v1dealTrackingStageRouter = require('../src/routers/v1/sales/deal-tracking-stage-router');
+var v1dealTrackingDealRouter = require('../src/routers/v1/sales/deal-tracking-deal-router');
+var v1dealTrackingActivityRouter = require('../src/routers/v1/sales/deal-tracking-activity-router');
+
 // INVENTORY
 var packingReceiptRouter = require('../src/routers/v1/inventory/packing-receipt-router');
 var packingReceiptReportRouter = require('../src/routers/v1/inventory/reports/packing-receipt-report-router');
@@ -118,7 +124,12 @@ module.exports = function(server) {
     v1InspectionLotColorRouter().applyRoutes(server,                            "/v1/finishing-printing/inspection-lot-colors");
     v1InspectionLotColorReportRouter().applyRoutes(server,                      "/v1/finishing-printing/reports/inspection-lot-color"); 
     v1fabricQualityControlReportRouter().applyRoutes(server,                    "/v1/finishing-printing/reports/fabric-quality-control-report"); 
-
+   
     v1BuyerRouter().applyRoutes(server,                    "/v1/master/buyer"); 
     v1MaterialConstructionRouter().applyRoutes(server,                    "/v1/master/material-construction"); 
+  
+    v1dealTrackingBoardRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-boards");
+    v1dealTrackingStageRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-stages");
+    v1dealTrackingDealRouter().applyRoutes(server,                              "/v1/sales/deal-tracking-deals");
+    v1dealTrackingActivityRouter().applyRoutes(server,                          "/v1/sales/deal-tracking-activities"); 
 };
