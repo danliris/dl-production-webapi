@@ -1,34 +1,42 @@
+
 const apiVersion = '1.0.0';
 var Manager = require("dl-module").managers.sales.ProductionOrderManager;
 var resultFormatter = require("../../../result-formatter");
 var db = require("../../../db");
+
 var JwtRouterFactory = require("../../jwt-router-factory");
 
-var handlePdfRequest = function (request, response, next) {
-    var user = request.user;
-    var id = request.params.id;
-    var manager;
+var handlePdfRequest = function(request, response, next) {
     db.get()
-        .then((db) => {
-            manager = new Manager(db, user);
-            return manager.getSingleByIdOrDefault(id);
-        })
-        .then((productionOrder) => {
-            manager.pdf(productionOrder._id)
-                .then((productionOrderDocBinary) => {
-                    response.writeHead(200, {
-                        "Content-Type": "application/pdf",
-                        "Content-Disposition": `attachment; filename = ${productionOrder.orderNo}.pdf`,
-                        "Content-Length": productionOrderDocBinary.length
-                    });
-                    response.end(productionOrderDocBinary);
+        .then(db => {
+            var manager = new Manager(db, request.user);
+            var id = request.params.id;
+            manager.pdf(id)
+                .then(docBinary => {
+                    manager.getSingleById(id)
+                        .then(doc => {
+                            response.writeHead(200, {
+                                'Content-Type': 'application/pdf',
+                                'Content-Disposition': `attachment; filename=${doc.orderNo}.pdf`,
+                                'Content-Length': docBinary.length
+                            });
+                            response.end(docBinary);
+                        })
+                        .catch(e => {
+                            var error = resultFormatter.fail(apiVersion, 400, e);
+                            response.send(400, error);
+                        });
                 })
-                .catch((e) => {
+                .catch(e => {
                     var error = resultFormatter.fail(apiVersion, 400, e);
                     response.send(400, error);
-                })
+                });
         })
-}
+        .catch(e => {
+            var error = resultFormatter.fail(apiVersion, 400, e);
+            response.send(400, error);
+        });
+};
 
 function getRouter() {
     var router = JwtRouterFactory(Manager, {
@@ -38,15 +46,41 @@ function getRouter() {
         }
     });
 
-    var route = router.routes["get"].find((route) => route.options.path === "/:id");
-    var originalHandler = route.handlers[route.handlers.length - 1];
-    route.handlers[route.handlers.length - 1] = function (request, response, next) {
-        var isPDFRequest = (request.headers.accept || "").toString().indexOf("application/pdf") >= 0;
-        if (isPDFRequest) {
-            next()
+    var route = router.routes["get"].find(route => route.options.path === "/:id");
+    route.handlers[route.handlers.length - 1] = function(request, response, next) {
+        if ((request.headers.accept || '').toString().indexOf("application/pdf") >= 0) {
+            next();
         }
         else {
-            originalHandler(request, response, next);
+            var id = request.params.id;
+            db.get()
+                .then(db => {
+                    var manager = new Manager(db, request.user);
+                    return Promise.resolve(manager);
+                })
+                .then((manager) => {
+                    return manager.getSingleByIdOrDefault(id);
+                })
+                .then((doc) => {
+                    var result;
+                    if (!doc) {
+                        result = resultFormatter.fail(apiVersion, 404, new Error("data not found"));
+                    }
+                    else {
+                        result = resultFormatter.ok(apiVersion, 200, doc);
+                    }
+                    return Promise.resolve(result);
+                })
+                .then((result) => {
+                    response.send(result.statusCode, result);
+                })
+                .catch((e) => {
+                    var statusCode = 500;
+                    if (e.name === "ValidationError")
+                        statusCode = 400;
+                    var error = resultFormatter.fail(apiVersion, statusCode, e);
+                    response.send(statusCode, error);
+                });
         }
     };
     route.handlers.push(handlePdfRequest);
@@ -54,3 +88,4 @@ function getRouter() {
 }
 
 module.exports = getRouter;
+
