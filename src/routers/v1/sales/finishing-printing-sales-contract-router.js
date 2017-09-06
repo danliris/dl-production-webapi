@@ -43,8 +43,7 @@ function getRouter() {
         version: apiVersion,
         defaultOrder: {
             "_updatedDate": -1
-        },
-        defaultSelect: ["salesContractNo", "buyer.name", "buyer.type", "deliverySchedule"]
+        }
     });
 
     var route = router.routes["get"].find(route => route.options.path === "/:id");
