@@ -30,12 +30,12 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 dailyOperationManager = manager;
-                return dailyOperationManager.getDailyOperationReport(query);
+                return dailyOperationManager.getDailyOperationBadReport(query);
             })
             .then(docs => {
-                var result = resultFormatter.ok(apiVersion, 200, docs.data);
-                delete docs.data;
-                result.info = docs;
+                var result = resultFormatter.ok(apiVersion, 200, docs);
+                // delete docs.data;
+                //result.info = docs;
                 return Promise.resolve(result);
             })
             .then((result) => {

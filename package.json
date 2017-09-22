@@ -23,13 +23,14 @@
 "homepage": "https://github.com/danliris/dl-production-webapi#readme",
   "dependencies": {
     "assert": "^1.4.1",
-    "dl-module": "git+https://github.com/danliris/dl-module.git",
+    "dl-module": "git+https://github.com/danliris/dl-module.git#uat",
     "json2xls": "^0.1.2",
     "mongo-factory": "^1.0.0",
     "mongodb": "^2.2.5",
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
+    "pkgcloud" : "^1.4.0",
     "restify": "^4.1.1",
     "restify-router": "^0.2.1"
   },

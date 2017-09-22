@@ -47,6 +47,9 @@ function getRouter() {
                                 item["Panjang"] = kanban.length;
                                 item["PCS"] = kanban.pcs;
                                 item["Satuan"] = kanban.uom;
+                                item["Step Index"] = `${kanban.currentStepIndex} / ${kanban.steps.length}`;
+                                item["Step"] = kanban.currentStepIndex === 0 ? " - " : kanban.steps[kanban.currentStepIndex - 1].process;
+                                item["Status"] = kanban.isComplete ? "Complete" : kanban.currentStepIndex === kanban.steps.length ? "Pending" : "Incomplete";
                                 data.push(item);
                             }
                             var options = {
@@ -64,7 +67,10 @@ function getRouter() {
                                 "Grade" : "string",
                                 "Nomor Kereta" : "string",
                                 "Panjang" : "number",
-                                "Satuan" : "string"
+                                "Satuan" : "string",
+                                "Step Index" : "string",
+                                "Step" : "string",
+                                "Status" : "string"
                             };
                             response.xls(`MONITORING KANBAN.xlsx`, data, options);
                         }

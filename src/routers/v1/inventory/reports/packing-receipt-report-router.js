@@ -1,8 +1,7 @@
 var Router = require('restify-router').Router;
 var db = require("../../../../db");
-var DailyOperationManager = require("dl-module").managers.production.finishingPrinting.DailyOperationManager;
+var PackingReceiptManager = require("dl-module").managers.inventory.finishingPrinting.FPPackingReceiptManager;
 var resultFormatter = require("../../../../result-formatter");
-
 var passport = require('../../../../passports/jwt-passport');
 const apiVersion = '1.0.0';
 
@@ -15,7 +14,7 @@ function getRouter() {
     var getManager = (user) => {
         return db.get()
             .then((db) => {
-                return Promise.resolve(new DailyOperationManager(db, user));
+                return Promise.resolve(new PackingReceiptManager(db, user));
             });
     };
 
@@ -26,13 +25,13 @@ function getRouter() {
         var query = request.query;
         query.order = Object.assign({}, defaultOrder, query.order);
 
-        var dailyOperationManager = {};
+        var packingReceiptManager = {};
         getManager(user)
             .then((manager) => {
-                dailyOperationManager = manager;
-                return dailyOperationManager.getDailyOperationReport(query);
+                packingReceiptManager = manager;
+                return packingReceiptManager.getReport(query);
             })
-            .then(docs => {
+            .then((docs) => {
                 var result = resultFormatter.ok(apiVersion, 200, docs.data);
                 delete docs.data;
                 result.info = docs;
@@ -42,9 +41,9 @@ function getRouter() {
                 if ((request.headers.accept || '').toString().indexOf("application/xls") < 0) {
                     response.send(result.statusCode, result);
                 }
-                else{
-                    dailyOperationManager.getXls(result, query)
-                        .then(xls => {
+                else {
+                    packingReceiptManager.getXls(result, query)
+                        .then((xls) => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
                 }

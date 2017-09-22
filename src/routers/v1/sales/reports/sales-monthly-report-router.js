@@ -13,12 +13,8 @@ function getRouter() {
 
             var query = request.queryInfo;
             query.accept =request.headers.accept;
-            if(!query.page){
-                query.page=1;
-            }if(!query.size){
-                query.size=20;
-            }
-            manager.getReport(query)
+  
+            manager.getSalesMonthlyReport(query)
                 .then(docs => {
                     var dateFormat = "DD MMM YYYY";
                     var locale = 'id';
@@ -29,7 +25,102 @@ function getRouter() {
                             docs.data[a]._createdDate = moment(new Date(docs.data[a]._createdDate)).format(dateFormat);
                             docs.data[a].deliveryDate = moment(new Date(docs.data[a].deliveryDate)).format(dateFormat);
                         }
-                        // var result = resultFormatter.ok(apiVersion, 200, docs);
+                        
+                        var result = resultFormatter.ok(apiVersion, 200, docs.data);
+                        delete docs.data;
+                        result.info = docs;
+                        response.send(200, result);
+                    } else {
+                        var index = 0;
+                        var data = [];
+                        for (var order of docs.data) {
+                            index++;
+                            var item = {};
+                            item["No"] = index;
+                            item["Sales"] = order._id.sales;
+                            item["Januari"] = order.jan.toFixed(2);
+                            item["Februari"] = order.feb.toFixed(2);
+                            item["Maret"] = order.mar.toFixed(2);
+                            item["April"] = order.apr.toFixed(2);
+                            item["Mei"] = order.mei.toFixed(2);
+                            item["Juni"] = order.jun.toFixed(2);
+                            item["Juli"] = order.jul.toFixed(2);
+                            item["Agustus"] = order.agu.toFixed(2);
+                            item["September"] = order.sep.toFixed(2);
+                            item["Oktober"] = order.okt.toFixed(2);
+                            item["November"] = order.nov.toFixed(2);
+                            item["Desember"] = order.des.toFixed(2);
+                            item["Total"] = order.totalOrder.toFixed(2);
+                            data.push(item);
+                        }
+                        var options = {
+                            "No": "number",
+                            "Sales": "string",
+                            "Januari": "string",
+                            "Februari": "string",
+                            "Maret": "string",
+                            "April": "string",
+                            "Mei": "string",
+                            "Juni": "string",
+                            "Juli": "string",
+                            "Agustus": "string",
+                            "September": "string",
+                            "Oktober": "string",
+                            "November": "string",
+                            "Desember": "string",
+                            "Total": "string",
+                        };
+                        response.xls(`Sales Monthly Report.xlsx`, data, options);
+                    }
+                })
+                .catch(e => {
+                    response.send(500, "gagal ambil data");
+                });
+        })
+            .catch(e => {
+                var error = resultFormatter.fail(apiVersion, 400, e);
+                response.send(400, error);
+            });
+    });
+    return router;
+}
+
+module.exports = getRouter;
+
+
+/* SUKSES
+
+var Router = require('restify-router').Router;
+var db = require("../../../../db");
+var ProductionOrderManager = require("dl-module").managers.sales.ProductionOrderManager;
+var resultFormatter = require("../../../../result-formatter");
+var passport = require('../../../../passports/jwt-passport');
+const apiVersion = '1.0.0';
+
+function getRouter() {
+    var router = new Router();
+    router.get("/", passport, function (request, response, next) {
+        db.get().then(db => {
+            var manager = new ProductionOrderManager(db, request.user);
+
+            var query = request.queryInfo;
+            query.accept =request.headers.accept;
+            if(!query.page){
+                query.page=1;
+            }if(!query.size){
+                query.size=20;
+            }
+            manager.getSalesMonthlyReport(query)
+                .then(docs => {
+                    var dateFormat = "DD MMM YYYY";
+                    var locale = 'id';
+                    var moment = require('moment');
+                    moment.locale(locale);
+                    if ((request.headers.accept || '').toString().indexOf("application/xls") < 0) {
+                        for (var a in docs.data) {
+                            docs.data[a]._createdDate = moment(new Date(docs.data[a]._createdDate)).format(dateFormat);
+                            docs.data[a].deliveryDate = moment(new Date(docs.data[a].deliveryDate)).format(dateFormat);
+                        }
                         
                         var result = resultFormatter.ok(apiVersion, 200, docs.data);
                         delete docs.data;
@@ -87,8 +178,8 @@ function getRouter() {
                             "Status": "string",
                             "Detail": "string"
                         };
-                        response.xls(`MONITORING SURAT ORDER PRODUKSI.xlsx`, data, options);
-                    }
+                        response.xls(`Sales Monthly Report.xlsx`, data, options);
+                    // }
                 })
                 .catch(e => {
                     response.send(500, "gagal ambil data");
@@ -102,5 +193,5 @@ function getRouter() {
     return router;
 }
 
-
 module.exports = getRouter;
+*/
