@@ -5,7 +5,7 @@ var db = require("../../../db");
 var passport = require("../../../passports/jwt-passport");
 const apiVersion = '1.0.0';
 
-var handlePdfRequest = function(request, response, next) {
+var handlePdfRequest = function (request, response, next) {
     var user = request.user;
     var id = request.params.id;
     var manager;
@@ -42,7 +42,7 @@ function getRouter() {
 
     var route = router.routes["get"].find(route => route.options.path === "/:id");
     var originalHandler = route.handlers[route.handlers.length - 1];
-    route.handlers[route.handlers.length - 1] = function(request, response, next) {
+    route.handlers[route.handlers.length - 1] = function (request, response, next) {
         var isPDFRequest = (request.headers.accept || '').toString().indexOf("application/pdf") >= 0;
         if (isPDFRequest) {
             next();
@@ -53,10 +53,40 @@ function getRouter() {
     };
     route.handlers.push(handlePdfRequest);
 
+    router.get("/read/visualization", passport, function (request, response, next) {
+        var user = request.user;
+        var query = request.query;
+
+        query.filter = query.filter;
+        query.select = query.select;
+
+        db.get()
+            .then(db => {
+                manager = new Manager(db, user);
+                return manager.readVisualization(query);
+            })
+            .then(docs => {
+                var result = resultFormatter.ok(apiVersion, 200, docs.data);
+                delete docs.data;
+                result.info = docs;
+                return Promise.resolve(result);
+            })
+            .then((result) => {
+                response.send(result.statusCode, result);
+            })
+            .catch((e) => {
+                var statusCode = 500;
+                if (e.name === "ValidationError")
+                    statusCode = 400;
+                var error = resultFormatter.fail(apiVersion, statusCode, e);
+                response.send(statusCode, error);
+            });
+    });
+
     router.put("/complete/:id", passport, (request, response, next) => {
         var user = request.user;
         var id = request.params.id;
-    
+
         db.get()
             .then(db => {
                 return Promise.resolve(new Manager(db, user));
