@@ -59,6 +59,7 @@ function getRouter() {
 
         query.filter = query.filter;
         query.select = query.select;
+        query.order = query.order;
 
         db.get()
             .then(db => {
