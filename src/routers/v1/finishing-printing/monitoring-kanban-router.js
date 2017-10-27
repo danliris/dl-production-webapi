@@ -28,8 +28,14 @@ function getRouter() {
                         }else{
                             var index = 0;
                             var data = [];
+							var hasil="";
                             for(var kanban of docs){
                                 index++;
+								  if(kanban.isReprocess==true){
+                                  hasil="Ya"; 
+                                 }else{
+                                     hasil="Tidak";
+                                }
                                 var item = {};
                                 item["No"] = index;
                                 item["Tanggal Kanban"] =  moment(new Date(kanban._createdDate)).format(dateFormat);
@@ -50,6 +56,7 @@ function getRouter() {
                                 item["Step Index"] = `${kanban.currentStepIndex} / ${kanban.steps.length}`;
                                 item["Step"] = kanban.currentStepIndex === 0 ? " - " : kanban.steps[kanban.currentStepIndex - 1].process;
                                 item["Status"] = kanban.isComplete ? "Complete" : kanban.currentStepIndex === kanban.steps.length ? "Pending" : "Incomplete";
+								 item["Reproses"] = hasil;
                                 data.push(item);
                             }
                             var options = {
