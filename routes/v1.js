@@ -75,6 +75,7 @@ var v1dealTrackingActivityRouter = require('../src/routers/v1/sales/deal-trackin
 
 // INVENTORY
 var packingReceiptRouter = require('../src/routers/v1/inventory/packing-receipt-router');
+var packingReceiptUnvoidRouter = require('../src/routers/v1/inventory/packing-receipt-unvoid-router');
 var packingReceiptReportRouter = require('../src/routers/v1/inventory/reports/packing-receipt-report-router');
 
 module.exports = function(server) {
@@ -123,13 +124,14 @@ module.exports = function(server) {
     v1finishingPrintingSalesContractByNumberRouter().applyRoutes(server,        "/v1/sales/finishing-printing-sales-contract-by-number");
     
     packingReceiptRouter().applyRoutes(server,                                  "/v1/inventory/packing-receipts"); 
+    packingReceiptUnvoidRouter().applyRoutes(server,                            "/v1/inventory/packing-receipts-unvoid"); 
     packingReceiptReportRouter().applyRoutes(server,                            "/v1/inventory/reports/packing-receipts"); 
     v1InspectionLotColorRouter().applyRoutes(server,                            "/v1/finishing-printing/inspection-lot-colors");
     v1InspectionLotColorReportRouter().applyRoutes(server,                      "/v1/finishing-printing/reports/inspection-lot-color"); 
     v1fabricQualityControlReportRouter().applyRoutes(server,                    "/v1/finishing-printing/reports/fabric-quality-control-report"); 
    
-    v1BuyerRouter().applyRoutes(server,                    "/v1/master/buyer"); 
-    v1MaterialConstructionRouter().applyRoutes(server,                    "/v1/master/material-construction"); 
+    v1BuyerRouter().applyRoutes(server,                                         "/v1/master/buyer"); 
+    v1MaterialConstructionRouter().applyRoutes(server,                          "/v1/master/material-construction"); 
   
     v1dealTrackingBoardRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-boards");
     v1dealTrackingStageRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-stages");
