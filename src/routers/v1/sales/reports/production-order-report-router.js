@@ -12,11 +12,11 @@ function getRouter() {
             var manager = new ProductionOrderManager(db, request.user);
 
             var query = request.queryInfo;
-            query.accept =request.headers.accept;
-            if(!query.page){
-                query.page=1;
-            }if(!query.size){
-                query.size=20;
+            query.accept = request.headers.accept;
+            if (!query.page) {
+                query.page = 1;
+            } if (!query.size) {
+                query.size = 20;
             }
             manager.getReport(query)
                 .then(docs => {
@@ -30,7 +30,7 @@ function getRouter() {
                             docs.data[a].deliveryDate = moment(new Date(docs.data[a].deliveryDate)).format(dateFormat);
                         }
                         // var result = resultFormatter.ok(apiVersion, 200, docs);
-                        
+
                         var result = resultFormatter.ok(apiVersion, 200, docs.data);
                         delete docs.data;
                         result.info = docs;
@@ -46,44 +46,38 @@ function getRouter() {
                             if (order.firstname) firstname = order.firstname;
                             if (order.lastname) lastname = order.lastname;
                             item["No"] = index;
+                            item["Status"] = order.status;
+                            item["Detail"] = order.detail;
                             item["Nomor Sales Contract"] = order.salesContractNo;
-                            item["Tanggal Surat Order Produksi"] = moment(new Date(order._createdDate)).format(dateFormat);
+                            item["Jumlah di Sales Contract (meter)"] = order.orderQuantity;
                             item["Nomor Surat Order Produksi"] = order.orderNo;
                             item["Jenis Order"] = order.orderType;
                             item["Jenis Proses"] = order.processType;
+                            item["Konstruksi"] = order.construction;
+                            item["Warna/Motif"] = order.designMotive;
+                            item["Jumlah di Surat Perintah Produksi (meter)"] = order.quantity;
                             item["Buyer"] = order.buyer;
                             item["Tipe Buyer"] = order.buyerType;
-                            item["Jumlah Order"] = order.orderQuantity;
-                            item["Satuan"] = order.uom;
-                            item["Acuan Warna / Desain"] = order.colorTemplate;
-                            item["Warna Yang Diminta"] = order.colorRequest;
-                            item["Jenis Warna"] = order.colorType;
-                            item["Jumlah"] = order.quantity;
-                            item["Satuan Detail"] = order.uomDetail;
-                            item["Tanggal Delivery"] = moment(new Date(order.deliveryDate)).format(dateFormat);
-                            item["Staff Penjualan"] = `${firstname} ${lastname}`;
-                            item["Status"] = order.status;
-                            item["Detail"] = order.detail;
+                            item["Staff Penjualan"] = order.staffName;
+                            item["Tanggal Terima Order"] = moment(new Date(order._createdDate)).format(dateFormat);
+                            item["Tanggal Permintaan Pengiriman"] = moment(new Date(order.deliveryDate)).format(dateFormat);
                             data.push(item);
                         }
                         var options = {
                             "No": "number",
                             "Nomor Sales Contract": "string",
-                            "Tanggal Surat Order Produksi": "string",
+                            "Jumlah di Sales Contract (meter)": "number",
                             "Nomor Surat Order Produksi": "string",
                             "Jenis Order": "string",
                             "Jenis Proses": "string",
+                            "Konstruksi": "string",
+                            "Warna/Motif": "string",
+                            "Jumlah di Surat Perintah Produksi (meter)": "number",
                             "Buyer": "string",
                             "Tipe Buyer": "string",
-                            "Jumlah Order": "number",
-                            "Satuan": "string",
-                            "Acuan Warna / Desain": "string",
-                            "Warna Yang Diminta": "string",
-                            "Jenis Warna": "string",
-                            "Jumlah": "number",
-                            "Satuan Detail": "string",
-                            "Tanggal Delivery": "string",
                             "Staff Penjualan": "string",
+                            "Tanggal Terima Order": "string",
+                            "Tanggal Permintaan Pengiriman": "string",
                             "Status": "string",
                             "Detail": "string"
                         };
