@@ -88,6 +88,7 @@ module.exports = function(server) {
     productionOrderRouter().applyRoutes(server,                                 "/sales/production-orders");
     productionOrderDetailReportRouter().applyRoutes(server,                     "/sales/reports/production-order-report/details");
     orderStatusReportRouter().applyRoutes(server,                               "/sales/reports/production-order-report/order-status-report");
+
     productionOrderReportRouter().applyRoutes(server,                           "/sales/reports/production-order-report");
     materialRouter().applyRoutes(server,                                        "/sales/materials");
     productionOrderBySalesContractNumber().applyRoutes(server,                  "/sales/production-order-by-sales-contract-numbers");
