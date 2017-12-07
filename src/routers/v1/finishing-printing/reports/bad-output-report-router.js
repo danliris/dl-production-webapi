@@ -43,7 +43,7 @@ function getRouter() {
                     response.send(result.statusCode, result);
                 }
                 else{
-                    dailyOperationManager.getXls(result, query)
+                    dailyOperationManager.getXls(result, query, query.timezoneOffset)
                         .then(xls => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
