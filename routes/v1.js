@@ -13,6 +13,7 @@ var v1DailySpinningProductionReportRouter = require('../src/routers/v1/spinning/
 //PRODUCTION ORDER
 var v1ProductionOrderRouter = require('../src/routers/v1/sales/production-order-router');
 var v1ProductionOrderReportRouter = require('../src/routers/v1/sales/reports/production-order-report-router');
+var v1OrderStatusReportRouter = require('../src/routers/v1/sales/reports/order-status-report-router');
 var v1ProductionOrderDetailReportRouter = require('../src/routers/v1/sales/reports/production-order-detail-report-router');
 var v1MaterialRouter = require('../src/routers/v1/sales/material-router');
 var v1ProductionOrderBySalesContractNumber = require('../src/routers/v1/sales/production-order-by-sales-contract-number-router');
@@ -75,6 +76,7 @@ var v1dealTrackingActivityRouter = require('../src/routers/v1/sales/deal-trackin
 
 // INVENTORY
 var packingReceiptRouter = require('../src/routers/v1/inventory/packing-receipt-router');
+var packingReceiptUnvoidRouter = require('../src/routers/v1/inventory/packing-receipt-unvoid-router');
 var packingReceiptReportRouter = require('../src/routers/v1/inventory/reports/packing-receipt-report-router');
 
 module.exports = function(server) {
@@ -89,6 +91,7 @@ module.exports = function(server) {
     v1ProductionOrderRouter().applyRoutes(server,                               "/v1/sales/production-orders");
     v1ProductionOrderDetailReportRouter().applyRoutes(server,                   "/v1/sales/reports/production-order-report/details");
     v1ProductionOrderReportRouter().applyRoutes(server,                         "/v1/sales/reports/production-order-report");
+    v1OrderStatusReportRouter().applyRoutes(server,                             "/v1/sales/reports/order-status-report");
     v1ProductionOrderBySalesContractNumber().applyRoutes(server,                "/v1/sales/production-order-by-sales-contract-numbers");
     v1MaterialRouter().applyRoutes(server,                                      "/v1/sales/materials");
     
@@ -123,13 +126,14 @@ module.exports = function(server) {
     v1finishingPrintingSalesContractByNumberRouter().applyRoutes(server,        "/v1/sales/finishing-printing-sales-contract-by-number");
     
     packingReceiptRouter().applyRoutes(server,                                  "/v1/inventory/packing-receipts"); 
+    packingReceiptUnvoidRouter().applyRoutes(server,                            "/v1/inventory/packing-receipts-unvoid"); 
     packingReceiptReportRouter().applyRoutes(server,                            "/v1/inventory/reports/packing-receipts"); 
     v1InspectionLotColorRouter().applyRoutes(server,                            "/v1/finishing-printing/inspection-lot-colors");
     v1InspectionLotColorReportRouter().applyRoutes(server,                      "/v1/finishing-printing/reports/inspection-lot-color"); 
     v1fabricQualityControlReportRouter().applyRoutes(server,                    "/v1/finishing-printing/reports/fabric-quality-control-report"); 
    
-    v1BuyerRouter().applyRoutes(server,                    "/v1/master/buyer"); 
-    v1MaterialConstructionRouter().applyRoutes(server,                    "/v1/master/material-construction"); 
+    v1BuyerRouter().applyRoutes(server,                                         "/v1/master/buyer"); 
+    v1MaterialConstructionRouter().applyRoutes(server,                          "/v1/master/material-construction"); 
   
     v1dealTrackingBoardRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-boards");
     v1dealTrackingStageRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-stages");
