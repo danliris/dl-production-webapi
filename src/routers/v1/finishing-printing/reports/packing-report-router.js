@@ -30,7 +30,7 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 packingManager = manager;
-                return packingManager.getPackingReport(query);
+                return packingManager.getPackingReport(query, request.timezoneOffset);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs.data);
