@@ -20,6 +20,7 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
+        query.offset = request.timezoneOffset;
 
         var inspectionLotColorManager = {};
         getManager(user)

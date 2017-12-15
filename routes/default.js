@@ -12,6 +12,7 @@ var dailySpinningProductionReportRouter = require('../src/routers/v1/spinning/wi
 
 //PRODUCTION ORDER
 var productionOrderRouter = require('../src/routers/v1/sales/production-order-router');
+var productionOrderCloseRouter = require('../src/routers/v1/sales/production-order-close-router');
 var productionOrderReportRouter = require('../src/routers/v1/sales/reports/production-order-report-router');
 var productionOrderDetailReportRouter = require('../src/routers/v1/sales/reports/production-order-detail-report-router');
 var orderStatusReportRouter = require('../src/routers/v1/sales/reports/order-status-report-router');
@@ -86,6 +87,7 @@ module.exports = function(server) {
     lotMachineByProductMachineRouter().applyRoutes(server,                      "/spinning/winding/search-lots");
     dailySpinningProductionReportRouter().applyRoutes(server,                   "/spinning/winding/reports/daily-production");
     productionOrderRouter().applyRoutes(server,                                 "/sales/production-orders");
+    productionOrderCloseRouter().applyRoutes(server,                            "/sales/production-order-close");
     productionOrderDetailReportRouter().applyRoutes(server,                     "/sales/reports/production-order-report/details");
     orderStatusReportRouter().applyRoutes(server,                               "/sales/reports/production-order-report/order-status-report");
     productionOrderReportRouter().applyRoutes(server,                           "/sales/reports/production-order-report");
