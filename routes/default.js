@@ -21,6 +21,7 @@ var productionOrderBySalesContractNumber = require('../src/routers/v1/sales/prod
 //DAILY OPERATION
 var DailyOperationRouter = require('../src/routers/v1/finishing-printing/daily-operation-router');
 var DailyOperationReportRouter = require('../src/routers/v1/finishing-printing/reports/daily-operation-report-router');
+var DailyOperationMachineReportRouter= require('../src/routers/v1/finishing-printing/reports/daily-operation-machine-report-router');
 
 //MONITORING EVENT
 var monitoringEventRouter = require('../src/routers/v1/finishing-printing/monitoring-event-router');
@@ -128,4 +129,6 @@ module.exports = function(server) {
     dealTrackingStageRouter().applyRoutes(server,                               "/sales/deal-tracking-stages");
     dealTrackingDealRouter().applyRoutes(server,                                "/sales/deal-tracking-deals");
     dealTrackingActivityRouter().applyRoutes(server,                            "/sales/deal-tracking-activities");
+
+    DailyOperationMachineReportRouter().applyRoutes(server,                     "/finishing-printing/reports/daily-operation-machine-report")
 };
