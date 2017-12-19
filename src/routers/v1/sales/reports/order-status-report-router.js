@@ -29,7 +29,7 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 productionOrderManager = manager;
-                return productionOrderManager.getOrderStatusReport(query);
+                return productionOrderManager.getOrderStatusReport(query, request.timezoneOffset);
             })
             .then((data) => {
                 var result = resultFormatter.ok(apiVersion, 200, data);
@@ -64,7 +64,7 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 productionOrderManager = manager;
-                return productionOrderManager.getOrderStatusDetailReport(request.params);
+                return productionOrderManager.getOrderStatusDetailReport(request.params, request.timezoneOffset);
             })
             .then((data) => {
                 var result = resultFormatter.ok(apiVersion, 200, data);
