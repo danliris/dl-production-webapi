@@ -25,12 +25,13 @@ function getRouter() {
         var user = request.user;
         var query = request.query;
         query.order = Object.assign({}, defaultOrder, query.order);
+        query.offset = request.timezoneOffset;
 
         var packingManager = {};
         getManager(user)
             .then((manager) => {
                 packingManager = manager;
-                return packingManager.getPackingReport(query, request.timezoneOffset);
+                return packingManager.getPackingReport(query);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs.data);
