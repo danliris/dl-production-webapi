@@ -48,14 +48,15 @@ function getRouter() {
                             item["No"] = index;
                             item["Status"] = order.status;
                             item["Detail"] = order.detail;
-                            item["Nomor Sales Contract"] = order.salesContractNo;
-                            item["Jumlah di Sales Contract (meter)"] = order.orderQuantity;
-                            item["Nomor Surat Order Produksi"] = order.orderNo;
+                            item["Nomor SPP"] = order.orderNo;
+                            item["Panjang SPP (M)"] = order.orderQuantity;
                             item["Jenis Order"] = order.orderType;
                             item["Jenis Proses"] = order.processType;
                             item["Konstruksi"] = order.construction;
                             item["Warna/Motif"] = order.designMotive;
-                            item["Jumlah di Surat Perintah Produksi (meter)"] = order.quantity;
+                            item["Hasil Matching"] = order.colorTemplate;
+                            item["CW"] = order.colorRequest;
+                            // item["Jumlah di Surat Perintah Produksi (meter)"] = order.quantity;
                             item["Buyer"] = order.buyer;
                             item["Tipe Buyer"] = order.buyerType;
                             item["Staff Penjualan"] = order.staffName;
@@ -65,21 +66,22 @@ function getRouter() {
                         }
                         var options = {
                             "No": "number",
-                            "Nomor Sales Contract": "string",
-                            "Jumlah di Sales Contract (meter)": "number",
-                            "Nomor Surat Order Produksi": "string",
+                            "Panjang SPP (M)": "number",
+                            "Nomor SPP": "string",
                             "Jenis Order": "string",
                             "Jenis Proses": "string",
                             "Konstruksi": "string",
                             "Warna/Motif": "string",
-                            "Jumlah di Surat Perintah Produksi (meter)": "number",
+                            // "Jumlah di Surat Perintah Produksi (meter)": "number",
                             "Buyer": "string",
                             "Tipe Buyer": "string",
                             "Staff Penjualan": "string",
                             "Tanggal Terima Order": "string",
                             "Tanggal Permintaan Pengiriman": "string",
                             "Status": "string",
-                            "Detail": "string"
+                            "Detail": "string",
+                            "Hasil Matching": "string",
+                            "CW": "string"
                         };
                         response.xls(`MONITORING SURAT ORDER PRODUKSI.xlsx`, data, options);
                     }
