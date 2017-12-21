@@ -46,7 +46,7 @@ function getRouter() {
                     response.send(result.statusCode, result);
                 }
                 else {
-                    dailyOperationManager.getXls(result, query)
+                    dailyOperationManager.getXlsDailyMachine(result, query)
                         .then(xls => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
