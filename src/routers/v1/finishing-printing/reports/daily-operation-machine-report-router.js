@@ -1,6 +1,6 @@
 var Router = require('restify-router').Router;
 var db = require("../../../../db");
-var MonitoringEventManager = require("dl-module").managers.production.finishingPrinting.MonitoringEventManager;
+var DailyOperationManager = require("dl-module").managers.production.finishingPrinting.DailyOperationManager;
 var resultFormatter = require("../../../../result-formatter");
 
 var passport = require('../../../../passports/jwt-passport');
@@ -9,13 +9,13 @@ const apiVersion = '1.0.0';
 function getRouter() {
 
     var defaultOrder = {
-        "_updatedDate": -1
+        "_id.date": 1
     };
 
     var getManager = (user) => {
         return db.get()
             .then((db) => {
-                return Promise.resolve(new MonitoringEventManager(db, user));
+                return Promise.resolve(new DailyOperationManager(db, user));
             });
     };
 
@@ -24,27 +24,29 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
-        query.order = Object.assign({}, defaultOrder, query.order);
-        query.offset = request.timezoneOffset;
+        
+        query.order = Object.assign({}, query.order, typeof defaultOrder === "function" ? defaultOrder(request, response, next) : defaultOrder, query.order);
 
-        var monitoringEventManager = {};
+
+        var dailyOperationManager = {};
         getManager(user)
             .then((manager) => {
-                monitoringEventManager = manager;
-                return monitoringEventManager.getMonitoringEventReport(query);
+                dailyOperationManager = manager;
+                return dailyOperationManager.getDailyMachine(query);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs.data);
                 delete docs.data;
                 result.info = docs;
+                // response.send(200, result);
                 return Promise.resolve(result);
             })
             .then((result) => {
                 if ((request.headers.accept || '').toString().indexOf("application/xls") < 0) {
                     response.send(result.statusCode, result);
                 }
-                else{
-                    monitoringEventManager.getXls(result, query)
+                else {
+                    dailyOperationManager.getXls(result, query)
                         .then(xls => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
