@@ -9,7 +9,7 @@ const apiVersion = '1.0.0';
 function getRouter() {
 
     var defaultOrder = {
-        "_id.day": 1
+        "_id.date": 1
     };
 
     var getManager = (user) => {
@@ -24,8 +24,7 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
-        // var area = query.area;
-        // var date = query.month + "," + query.year;
+        
         query.order = Object.assign({}, query.order, typeof defaultOrder === "function" ? defaultOrder(request, response, next) : defaultOrder, query.order);
 
 
@@ -33,14 +32,13 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 dailyOperationManager = manager;
-                // return dailyOperationManager.getDailyMachine(area, date);
                 return dailyOperationManager.getDailyMachine(query);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs.data);
                 delete docs.data;
                 result.info = docs;
-                response.send(200, result);
+                // response.send(200, result);
                 return Promise.resolve(result);
             })
             .then((result) => {
