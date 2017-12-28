@@ -101,7 +101,8 @@ function getRouter() {
                             return Promise.resolve(result);
                         }
                         else {
-                            return manager.updateIsComplete(id)
+                            var isInactive = false; //data to be completed
+                            return manager.updateIsComplete(id, isInactive)
                                 .then((docId) => {
                                     result = resultFormatter.ok(apiVersion, 204);
                                     return Promise.resolve(result);
