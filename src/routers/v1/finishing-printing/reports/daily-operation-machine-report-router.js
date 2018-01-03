@@ -9,7 +9,7 @@ const apiVersion = '1.0.0';
 function getRouter() {
 
     var defaultOrder = {
-        "_updatedDate": -1
+        "_id.date": 1
     };
 
     var getManager = (user) => {
@@ -24,26 +24,30 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
-        query.order = Object.assign({}, defaultOrder, query.order);
+        
+        query.order = Object.assign({}, query.order, typeof defaultOrder === "function" ? defaultOrder(request, response, next) : defaultOrder, query.order);
+
 
         var dailyOperationManager = {};
         getManager(user)
             .then((manager) => {
                 dailyOperationManager = manager;
-                return dailyOperationManager.getDailyOperationReport(query);
+                return dailyOperationManager.getDailyMachine(query);
             })
             .then(docs => {
-                var result = resultFormatter.ok(apiVersion, 200, docs.data);
-                delete docs.data;
-                result.info = docs;
+                var result = resultFormatter.ok(apiVersion, 200, docs);
+                // delete docs.data;
+                result.info = docs.info;
+                result.summary = docs.summary;
+                // response.send(200, result);
                 return Promise.resolve(result);
             })
             .then((result) => {
                 if ((request.headers.accept || '').toString().indexOf("application/xls") < 0) {
                     response.send(result.statusCode, result);
                 }
-                else{
-                    dailyOperationManager.getXls(result, query, request.timezoneOffset)
+                else {
+                    dailyOperationManager.getXlsDailyMachine(result, query)
                         .then(xls => {
                             response.xls(xls.name, xls.data, xls.options)
                         });

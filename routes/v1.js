@@ -12,6 +12,7 @@ var v1DailySpinningProductionReportRouter = require('../src/routers/v1/spinning/
 
 //PRODUCTION ORDER
 var v1ProductionOrderRouter = require('../src/routers/v1/sales/production-order-router');
+var v1ProductionOrderCloseRouter = require('../src/routers/v1/sales/production-order-close-router');
 var v1ProductionOrderReportRouter = require('../src/routers/v1/sales/reports/production-order-report-router');
 var v1OrderStatusReportRouter = require('../src/routers/v1/sales/reports/order-status-report-router');
 var v1ProductionOrderDetailReportRouter = require('../src/routers/v1/sales/reports/production-order-detail-report-router');
@@ -23,6 +24,7 @@ var v1DailyOperationRouter = require('../src/routers/v1/finishing-printing/daily
 var v1DailyOperationReportRouter = require('../src/routers/v1/finishing-printing/reports/daily-operation-report-router');
 
 var v1DailyOperationBadOuputReportRouter = require('../src/routers/v1/finishing-printing/reports/bad-output-report-router');
+var v1DailyOperationMachineReportRouter= require('../src/routers/v1/finishing-printing/reports/daily-operation-machine-report-router');
 
 //MONITORING EVENT
 var v1MonitoringEventRouter = require('../src/routers/v1/finishing-printing/monitoring-event-router');
@@ -43,6 +45,7 @@ var fabricQualityControlRouter= require('../src/routers/v1/finishing-printing/fa
 var fabricQualityControlUnUsedRouter= require('../src/routers/v1/finishing-printing/fabric-quality-control-unused-router');
 var v1fabricQualityControlReportRouter= require('../src/routers/v1/finishing-printing/reports/fabric-quality-control-report-router');
 var packingRouter= require('../src/routers/v1/finishing-printing/packing-router');
+var qcgudangReportRouter=require('../src/routers/v1/finishing-printing/reports/qcgudang-report-router');
 
 var packingReportRouter=require('../src/routers/v1/finishing-printing/reports/packing-report-router');
 var packingUnacceptedRouter= require('../src/routers/v1/finishing-printing/packing-unaccepted-router');
@@ -90,6 +93,7 @@ module.exports = function(server) {
     v1DailySpinningProductionReportRouter().applyRoutes(server,                 "/v1/spinning/winding/reports/daily-production");
     
     v1ProductionOrderRouter().applyRoutes(server,                               "/v1/sales/production-orders");
+    v1ProductionOrderCloseRouter().applyRoutes(server,                          "/v1/sales/production-order-close");
     v1ProductionOrderDetailReportRouter().applyRoutes(server,                   "/v1/sales/reports/production-order-report/details");
     v1ProductionOrderReportRouter().applyRoutes(server,                         "/v1/sales/reports/production-order-report");
     v1OrderStatusReportRouter().applyRoutes(server,                             "/v1/sales/reports/order-status-report");
@@ -122,6 +126,7 @@ module.exports = function(server) {
     packingUnacceptedRouter().applyRoutes(server,                               "/v1/finishing-printing/quality-control/packings-unaccepted");
   
     packingReportRouter().applyRoutes(server,                                   "/v1/finishing-printing/reports/packings")
+    qcgudangReportRouter().applyRoutes(server,                                   "/v1/finishing-printing/reports/qcgudang")
 
     v1finishingPrintingSalesContractReportRouter().applyRoutes(server,          "/v1/finishing-printing/reports/finishing-printing-sales-contract-reports");
     v1finishingPrintingSalesContractByNumberRouter().applyRoutes(server,        "/v1/sales/finishing-printing-sales-contract-by-number");
@@ -140,5 +145,8 @@ module.exports = function(server) {
     v1dealTrackingStageRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-stages");
     v1dealTrackingDealRouter().applyRoutes(server,                              "/v1/sales/deal-tracking-deals");
     v1dealTrackingActivityRouter().applyRoutes(server,                          "/v1/sales/deal-tracking-activities"); 
+
     v1MachineQueueRouter().applyRoutes(server,                                  "/v1//finishing-printing/reports/machine-queue");
+
+    v1DailyOperationMachineReportRouter().applyRoutes(server,                   "/v1/finishing-printing/reports/daily-operation-machine-report")
 };
