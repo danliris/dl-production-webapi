@@ -35,9 +35,10 @@ function getRouter() {
                 return dailyOperationManager.getDailyMachine(query);
             })
             .then(docs => {
-                var result = resultFormatter.ok(apiVersion, 200, docs.data);
-                delete docs.data;
-                result.info = docs;
+                var result = resultFormatter.ok(apiVersion, 200, docs);
+                // delete docs.data;
+                result.info = docs.info;
+                result.summary = docs.summary;
                 // response.send(200, result);
                 return Promise.resolve(result);
             })
