@@ -1,6 +1,6 @@
 var Router = require('restify-router').Router;
 var db = require("../../../../db");
-var DailyOperationManager = require("dl-module").managers.production.finishingPrinting.DailyOperationManager;
+var KanbanManager = require("dl-module").managers.production.finishingPrinting.KanbanManager;
 var resultFormatter = require("../../../../result-formatter");
 
 var passport = require('../../../../passports/jwt-passport');
@@ -9,13 +9,13 @@ const apiVersion = '1.0.0';
 function getRouter() {
 
     var defaultOrder = {
-        "_id.date": 1
+        "_updatedDate": -1
     };
 
     var getManager = (user) => {
         return db.get()
             .then((db) => {
-                return Promise.resolve(new DailyOperationManager(db, user));
+                return Promise.resolve(new KanbanManager(db, user));
             });
     };
 
@@ -24,22 +24,15 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
-        
-        query.order = Object.assign({}, query.order, typeof defaultOrder === "function" ? defaultOrder(request, response, next) : defaultOrder, query.order);
+        var kanbanManager = {};
 
-
-        var dailyOperationManager = {};
         getManager(user)
             .then((manager) => {
-                dailyOperationManager = manager;
-                return dailyOperationManager.getDailyMachine(query);
+                kanbanManager = manager;
+                return kanbanManager.getMachineQueueReport(query);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs);
-                // delete docs.data;
-                result.info = docs.info;
-                result.summary = docs.summary;
-                // response.send(200, result);
                 return Promise.resolve(result);
             })
             .then((result) => {
@@ -47,7 +40,7 @@ function getRouter() {
                     response.send(result.statusCode, result);
                 }
                 else {
-                    dailyOperationManager.getXlsDailyMachine(result, query)
+                    kanbanManager.getMachineQueueXls(result, query)
                         .then(xls => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
