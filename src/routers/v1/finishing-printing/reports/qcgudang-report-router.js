@@ -26,7 +26,8 @@ function getRouter() {
         var user = request.user;
         var query = request.query;
         query.order = Object.assign({}, defaultOrder, query.order);
-
+        query.offset = request.timezoneOffset;
+      
         var dailyOperationManager = {};
         getManager(user)
             .then((manager) => {

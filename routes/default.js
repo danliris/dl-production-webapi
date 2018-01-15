@@ -36,6 +36,7 @@ var monitoringSpecificationMachineReportRouter= require('../src/routers/v1/finis
 // KANBAN
 var kanbanRouter = require('../src/routers/v1/finishing-printing/kanban-router');
 var monitoringKanbanRouter= require('../src/routers/v1/finishing-printing/monitoring-kanban-router');
+var machineQueueRouter = require('../src/routers/v1/finishing-printing/reports/machine-queue-report-router');
 
 // QUALITY-CONTROL/FABRIC
 
@@ -132,5 +133,6 @@ module.exports = function(server) {
     dealTrackingDealRouter().applyRoutes(server,                                "/sales/deal-tracking-deals");
     dealTrackingActivityRouter().applyRoutes(server,                            "/sales/deal-tracking-activities");
 
+    machineQueueRouter().applyRoutes(server,                                    "/finishing-printing/reports/machine-queue");
     DailyOperationMachineReportRouter().applyRoutes(server,                     "/finishing-printing/reports/daily-operation-machine-report")
 };

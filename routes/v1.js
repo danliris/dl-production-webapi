@@ -38,6 +38,7 @@ var v1MonitoringSpecificationMachineReportRouter = require('../src/routers/v1/fi
 // KANBAN
 var v1KanbanRouter = require('../src/routers/v1/finishing-printing/kanban-router');
 var v1MonitoringKanbanRouter= require('../src/routers/v1/finishing-printing/monitoring-kanban-router');
+var v1MachineQueueRouter = require('../src/routers/v1/finishing-printing/reports/machine-queue-report-router');
 
 // QUALITY-CONTROL/FABRIC
 var fabricQualityControlRouter= require('../src/routers/v1/finishing-printing/fabric-quality-control-router');
@@ -144,6 +145,8 @@ module.exports = function(server) {
     v1dealTrackingStageRouter().applyRoutes(server,                             "/v1/sales/deal-tracking-stages");
     v1dealTrackingDealRouter().applyRoutes(server,                              "/v1/sales/deal-tracking-deals");
     v1dealTrackingActivityRouter().applyRoutes(server,                          "/v1/sales/deal-tracking-activities"); 
+
+    v1MachineQueueRouter().applyRoutes(server,                                  "/v1//finishing-printing/reports/machine-queue");
 
     v1DailyOperationMachineReportRouter().applyRoutes(server,                   "/v1/finishing-printing/reports/daily-operation-machine-report")
 };
