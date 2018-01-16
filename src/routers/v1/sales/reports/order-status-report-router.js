@@ -90,6 +90,41 @@ function getRouter() {
             });
     });
 
+    router.get("/:orderNo", passport, function (request, response, next) {
+        var user = request.user;
+        var query = request.query;
+        query.order = Object.assign({}, defaultOrder, query.order);
+
+        var productionOrderManager = {};
+        getManager(user)
+            .then((manager) => {
+                productionOrderManager = manager;
+                return productionOrderManager.getOrderStatusKanbanDetailReport(request.params);
+            })
+            .then((data) => {
+                var result = resultFormatter.ok(apiVersion, 200, data);
+                return Promise.resolve(result);
+            })
+            .then((result) => {
+                if ((request.headers.accept || '').toString().indexOf("application/xls") < 0) {
+                    response.send(result.statusCode, result);
+                }
+                else {
+                    productionOrderManager.getOrderStatusKanbanDetailXls(result, request.params)
+                        .then((xls) => {
+                            response.xls(xls.name, xls.data, xls.options)
+                        });
+                }
+            })
+            .catch((e) => {
+                var statusCode = 500;
+                if (e.name === "ValidationError")
+                    statusCode = 400;
+                var error = resultFormatter.fail(apiVersion, statusCode, e);
+                response.send(statusCode, error);
+            });
+    });
+
     return router;
 }
 
