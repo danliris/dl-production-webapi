@@ -29,7 +29,7 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 kanbanManager = manager;
-                return kanbanManager.getMachineQueueReport(query);
+                return kanbanManager.getMachineQueueReport(query, request.timezoneOffset);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs);
