@@ -24,7 +24,7 @@ function getRouter() {
     router.get("/", passport, function (request, response, next) {
         var user = request.user;
         var query = request.query;
-        
+
         query.order = Object.assign({}, query.order, typeof defaultOrder === "function" ? defaultOrder(request, response, next) : defaultOrder, query.order);
 
 
@@ -32,7 +32,7 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 dailyOperationManager = manager;
-                return dailyOperationManager.getDailyMachine(query);
+                return dailyOperationManager.getDailyMachine(query, request.timezoneOffset);
             })
             .then(docs => {
                 var result = resultFormatter.ok(apiVersion, 200, docs);
