@@ -75,7 +75,7 @@ function getRouter() {
                     response.send(result.statusCode, result);
                 }
                 else {
-                    productionOrderManager.getOrderStatusDetailXls(result, request.params)
+                    productionOrderManager.getOrderStatusDetailXls(result, request.params, request.timezoneOffset)
                         .then((xls) => {
                             response.xls(xls.name, xls.data, xls.options)
                         });
@@ -110,9 +110,23 @@ function getRouter() {
                     response.send(result.statusCode, result);
                 }
                 else {
-                    productionOrderManager.getOrderStatusKanbanDetailXls(result, request.params)
+                    productionOrderManager.getOrderStatusKanbanDetailXls(result, request.params, request.timezoneOffset)
                         .then((xls) => {
-                            response.xls(xls.name, xls.data, xls.options)
+                            let XLSX = require('xlsx');
+                            let wb = XLSX.utils.book_new;
+                            wb.SheetNames = ["Laporan Status Order Kanban", "Histories"];
+                            wb.Sheets = {};
+
+                            let ws = XLSX.utils.json_to_sheet(xls.data);
+                            let wsHistory = XLSX.utils.json_to_sheet(xls.histories);
+                            wb.Sheets["Laporan Status Order Kanban"] = ws;
+                            wb.Sheets["Histories"] = wsHistory;
+
+                            let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+                            response.setHeader('Content-Type', 'application/vnd.openxmlformats');
+                            response.setHeader("Content-Disposition", "attachment; filename=" + xls.name);
+
+                            response.send(new Buffer(wbout));
                         });
                 }
             })
