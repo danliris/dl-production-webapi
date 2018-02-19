@@ -53,7 +53,7 @@ function getRouter() {
                             item["Jenis Order"] = order.orderType;
                             item["Jenis Proses"] = order.processType;
                             item["Konstruksi"] = order.construction;
-                            item["Warna/Motif"] = order.designMotive;
+                            item["Motif"] = order.designCode;
                             item["Hasil Matching"] = order.colorTemplate;
                             item["CW"] = order.colorRequest;
                             // item["Jumlah di Surat Perintah Produksi (meter)"] = order.quantity;
@@ -71,7 +71,7 @@ function getRouter() {
                             "Jenis Order": "string",
                             "Jenis Proses": "string",
                             "Konstruksi": "string",
-                            "Warna/Motif": "string",
+                            "Motif": "string",
                             // "Jumlah di Surat Perintah Produksi (meter)": "number",
                             "Buyer": "string",
                             "Tipe Buyer": "string",

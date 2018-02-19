@@ -78,7 +78,7 @@ var packingReceiptRouter = require('../src/routers/v1/inventory/packing-receipt-
 var packingReceiptUnvoidRouter = require('../src/routers/v1/inventory/packing-receipt-unvoid-router');
 var packingReceiptReportRouter = require('../src/routers/v1/inventory/reports/packing-receipt-report-router');
 
-
+let orderStatusHistoryRouter = require('../src/routers/v1/sales/order-status-history-router');
 
 module.exports = function(server) {
     windingQualitySamplingRouter().applyRoutes(server,                          "/spinning/winding/winding-quality-samplings");
@@ -134,5 +134,7 @@ module.exports = function(server) {
     dealTrackingActivityRouter().applyRoutes(server,                            "/sales/deal-tracking-activities");
 
     machineQueueRouter().applyRoutes(server,                                    "/finishing-printing/reports/machine-queue");
-    DailyOperationMachineReportRouter().applyRoutes(server,                     "/finishing-printing/reports/daily-operation-machine-report")
+    DailyOperationMachineReportRouter().applyRoutes(server,                     "/finishing-printing/reports/daily-operation-machine-report"),
+
+    orderStatusHistoryRouter().applyRoutes(server,                              "/sales/order-status-histories")
 };
