@@ -23,7 +23,7 @@ before("#00. get security token", function(done) {
 it(`#01. get reports - [GET]${uri}`, function(done) {
     request
         .get(uri)
-        .set("authorization", `JWT ${jwt}`)
+        .set("authorization", `Bearer ${jwt}`)
         .set("Accept", "application/json")
         .expect(200)
         .expect("Content-Type", "application/json")
