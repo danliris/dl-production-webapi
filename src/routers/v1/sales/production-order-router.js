@@ -70,7 +70,7 @@ function getRouter() {
                 return manager.updateIsCompleted(data)
                     .then((id) => {
                         var result;
-                        if (!id) {
+                        if (!id[0]) {
                             result = resultFormatter.fail(apiVersion, 404, new Error("data not found"));
                             return Promise.resolve(result);
                         }
@@ -132,9 +132,9 @@ function getRouter() {
         getManager(user)
             .then((manager) => {
                 return manager.updateDistributedQuantity(data)
-                    .then((datum) => {
+                    .then((arr) => {
                         var result;
-                        if (!datum) {
+                        if (!arr[0]) {
                             result = resultFormatter.fail(apiVersion, 404, new Error("data not found"));
                             return Promise.resolve(result);
                         }
