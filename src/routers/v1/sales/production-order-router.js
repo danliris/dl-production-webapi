@@ -63,14 +63,14 @@ function getRouter() {
     //Update is completed
     router.put("/update/is-completed", passport, (request, response, next) => {
         var user = request.user;
-        var ids = request.body.data;
+        var data = request.body;
 
         getManager(user)
             .then((manager) => {
-                return manager.updateIsCompleted(ids)
+                return manager.updateIsCompleted(data)
                     .then((id) => {
                         var result;
-                        if (!id) {
+                        if (!id[0]) {
                             result = resultFormatter.fail(apiVersion, 404, new Error("data not found"));
                             return Promise.resolve(result);
                         }
@@ -95,11 +95,11 @@ function getRouter() {
     //Update is requested
     router.put("/update/is-requested", passport, (request, response, next) => {
         var user = request.user;
-        var ids = request.body.data;
+        var data = request.body;
 
         getManager(user)
             .then((manager) => {
-                return manager.updateIsRequested(ids)
+                return manager.updateIsRequested(data)
                     .then((id) => {
                         var result;
                         if (!id) {
@@ -127,14 +127,14 @@ function getRouter() {
     //Update distributed quantity
     router.put("/update/distributed-quantity", passport, (request, response, next) => {
         var user = request.user;
-        var data = request.body.data;
+        var data = request.body;
 
         getManager(user)
             .then((manager) => {
                 return manager.updateDistributedQuantity(data)
-                    .then((datum) => {
+                    .then((arr) => {
                         var result;
-                        if (!datum) {
+                        if (!arr[0]) {
                             result = resultFormatter.fail(apiVersion, 404, new Error("data not found"));
                             return Promise.resolve(result);
                         }
