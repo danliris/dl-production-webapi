@@ -127,7 +127,7 @@ function getRouter() {
     //Update distributed quantity
     router.put("/update/distributed-quantity", passport, (request, response, next) => {
         var user = request.user;
-        var data = request.body;
+        var data = request.body.data;
 
         getManager(user)
             .then((manager) => {
