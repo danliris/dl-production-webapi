@@ -22,7 +22,7 @@ var v1ProductionOrderBySalesContractNumber = require('../src/routers/v1/sales/pr
 //DAILY OPERATION
 var v1DailyOperationRouter = require('../src/routers/v1/finishing-printing/daily-operation-router');
 var v1DailyOperationReportRouter = require('../src/routers/v1/finishing-printing/reports/daily-operation-report-router');
-
+var v1ReportDailyOperationRouter = require('../src/routers/v1/finishing-printing/report-daily-operation-router');
 var v1DailyOperationBadOuputReportRouter = require('../src/routers/v1/finishing-printing/reports/bad-output-report-router');
 var v1DailyOperationMachineReportRouter= require('../src/routers/v1/finishing-printing/reports/daily-operation-machine-report-router');
 
@@ -110,7 +110,7 @@ module.exports = function(server) {
     v1DailyOperationRouter().applyRoutes(server,                                "/v1/finishing-printing/daily-operations");
     v1DailyOperationReportRouter().applyRoutes(server,                          "/v1/finishing-printing/reports/daily-operation-report");
     v1MonitoringEventRouter().applyRoutes(server,                               "/v1/finishing-printing/monitoring-events");
-  
+    v1ReportDailyOperationRouter().applyRoutes(server,                          "/v1/finishing-printing/report-daily-operations");
     v1SalesMonthlyReportRouter().applyRoutes(server,                            "/v1/sales/reports/sales-monthly-report");
     
     v1DailyOperationBadOuputReportRouter().applyRoutes(server,                  "/v1/finishing-printing/reports/bad-output-report");
