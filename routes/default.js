@@ -23,7 +23,7 @@ var productionOrderBySalesContractNumber = require('../src/routers/v1/sales/prod
 var DailyOperationRouter = require('../src/routers/v1/finishing-printing/daily-operation-router');
 var DailyOperationReportRouter = require('../src/routers/v1/finishing-printing/reports/daily-operation-report-router');
 var DailyOperationMachineReportRouter= require('../src/routers/v1/finishing-printing/reports/daily-operation-machine-report-router');
-
+var ReportDailyOperationRouter = require('../src/routers/v1/finishing-printing/report-daily-operation-router');
 //MONITORING EVENT
 var monitoringEventRouter = require('../src/routers/v1/finishing-printing/monitoring-event-router');
 var monitoringEventReportRouter = require('../src/routers/v1/finishing-printing/reports/monitoring-event-report-router');
@@ -112,7 +112,7 @@ module.exports = function(server) {
     kanbanRouter().applyRoutes(server,                                          "/finishing-printing/kanbans");
     inspectionLotColorRouter().applyRoutes(server,                              "/finishing-printing/inspection-lot-colors");
     inspectionLotColorReportRouter().applyRoutes(server,                        "/finishing-printing/reports/inspection-lot-color");
-    
+    ReportDailyOperationRouter().applyRoutes(server,                            "/finishing-printing/report-daily-operations");
     fabricQualityControlRouter().applyRoutes(server,                            "/finishing-printing/quality-control/fabrics");
     fabricQualityControlUnUsedRouter().applyRoutes(server,                      "/finishing-printing/quality-control-unused");
     packingRouter().applyRoutes(server,                                         "/finishing-printing/quality-control/packings");
