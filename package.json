@@ -20,9 +20,10 @@
   "bugs": {
     "url": "https://github.com/danliris/dl-production-webapi/issues"
   },
-"homepage": "https://github.com/danliris/dl-production-webapi#readme",
+  "homepage": "https://github.com/danliris/dl-production-webapi#readme",
   "dependencies": {
     "assert": "^1.4.1",
+    "azure-storage": "^2.10.0",
     "dl-module": "git+https://github.com/danliris/dl-module.git",
     "json2xls": "^0.1.2",
     "mongo-factory": "^1.0.0",
@@ -30,7 +31,7 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
-    "pkgcloud" : "^1.4.0",
+    "pkgcloud": "^1.4.0",
     "restify": "^4.1.1",
     "restify-router": "^0.2.1",
     "xlsx": "^0.12.1"
